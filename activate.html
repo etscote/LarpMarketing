@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Activate License — larpify</title>
+  <link rel="icon" type="image/png" href="/images/LarpifyLogo.png">
+  <link rel="stylesheet" href="./css/main.css">
+  <style>
+    body { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 24px; }
+
+    .activate-card {
+      background: #12131a;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      padding: 48px 40px 40px;
+      width: 100%; max-width: 460px;
+      position: relative; z-index: 1;
+      text-align: center;
+    }
+
+    .act-logo {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      margin-bottom: 28px;
+    }
+    .act-logo-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: #fff; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .act-logo-icon img { width: 100%; height: 100%; object-fit: contain; }
+    .act-logo-text { font-size: 18px; font-weight: 700; color: #fff; }
+    .act-logo-text span { color: var(--green-primary); }
+
+    .act-title { font-size: 26px; font-weight: 800; color: #fff; margin-bottom: 10px; }
+    .act-sub { font-size: 14px; color: rgba(255,255,255,0.4); line-height: 1.6; margin-bottom: 24px; }
+
+    .act-warning {
+      background: rgba(234,179,8,0.08);
+      border: 1px solid rgba(234,179,8,0.25);
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 13px; color: rgba(255,255,255,0.55);
+      text-align: left; line-height: 1.6; margin-bottom: 24px;
+    }
+    .act-warning strong { color: #facc15; }
+    .act-warning .hi { color: #facc15; }
+
+    .act-field-label {
+      text-align: left; font-size: 13px; font-weight: 600;
+      color: rgba(255,255,255,0.45); margin-bottom: 8px;
+    }
+    .act-input {
+      width: 100%; background: rgba(255,255,255,0.05);
+      border: 1.5px solid rgba(255,255,255,0.1);
+      border-radius: 12px; padding: 14px 16px;
+      color: #fff; font-size: 15px; font-family: 'Space Mono', monospace;
+      outline: none; transition: border-color .2s; margin-bottom: 16px;
+      letter-spacing: 0.05em;
+    }
+    .act-input::placeholder { color: rgba(255,255,255,0.2); }
+    .act-input:focus { border-color: var(--green-primary); }
+    .act-input.error { border-color: #e53e3e; animation: shake .35s; }
+
+    .act-btn {
+      width: 100%; background: var(--green-primary);
+      border: none; border-radius: 12px; padding: 15px;
+      color: #0A0F0A; font-size: 16px; font-weight: 800;
+      cursor: pointer; font-family: inherit;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: background .2s, transform .15s;
+      margin-bottom: 16px;
+    }
+    .act-btn:hover { background: var(--green-bright); transform: translateY(-1px); }
+
+    .act-back {
+      font-size: 13px; color: rgba(255,255,255,0.3);
+      text-decoration: none; display: block;
+      transition: color .2s;
+    }
+    .act-back:hover { color: rgba(255,255,255,0.6); }
+
+    .act-error-msg {
+      font-size: 13px; color: #fc8181; margin-bottom: 12px;
+      display: none;
+    }
+
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20% { transform: translateX(-6px); }
+      40% { transform: translateX(6px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="ambient-bg">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<div class="activate-card">
+  <div class="act-logo">
+    <div class="act-logo-icon"><img src="/images/LarpifyLogo.png" alt="larpify"></div>
+    <div class="act-logo-text">larpi<span>fy</span></div>
+  </div>
+
+  <div class="act-title">Activate Your License</div>
+  <div class="act-sub">Enter the license key you received after purchase to get started.</div>
+
+  <div class="act-warning">
+    ⚠ <strong>Important:</strong> Activate your key directly here in the browser — <strong>not</strong> via Telegram. Use <span class="hi"><strong>Safari on iOS</strong></span> or <span class="hi"><strong>Chrome on Android</strong></span> for the PWA to work correctly.
+  </div>
+
+  <div class="act-field-label">License Key</div>
+  <input class="act-input" id="licenseInput" type="text" placeholder="XXXX-XXXX-XXXX-XXXX" autocomplete="off" autocorrect="off" spellcheck="false">
+
+  <div class="act-error-msg" id="actError">Invalid license key. Please check and try again.</div>
+
+  <button class="act-btn" onclick="activateLicense()">
+    Activate License
+    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </button>
+
+  <a href="/" class="act-back">← Back to home</a>
+</div>
+
+<script>
+  const PWA_URL = 'http://localhost:8080'; // change to your hosted PWA URL
+
+  async function activateLicense() {
+    const input = document.getElementById('licenseInput');
+    const btn = document.querySelector('.act-btn');
+    const key = input.value.trim().toUpperCase();
+    const errEl = document.getElementById('actError');
+
+    if (!key) {
+      input.classList.add('error');
+      setTimeout(() => input.classList.remove('error'), 400);
+      return;
+    }
+
+    btn.textContent = 'Checking...';
+    btn.disabled = true;
+
+    try {
+      const res = await fetch('/check-license', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ key })
+      });
+      const data = await res.json();
+
+      if (!data.valid) {
+        input.classList.add('error');
+        setTimeout(() => input.classList.remove('error'), 400);
+        errEl.textContent = data.reason || 'Invalid license key.';
+        errEl.style.display = 'block';
+        return;
+      }
+
+      errEl.style.display = 'none';
+      localStorage.setItem('larpify_key', key);
+      localStorage.setItem('larpify_plan', data.plan);
+      window.location.href = PWA_URL;
+    } catch (e) {
+      errEl.textContent = 'Connection error. Try again.';
+      errEl.style.display = 'block';
+    } finally {
+      btn.textContent = 'Activate License →';
+      btn.disabled = false;
+    }
+  }
+
+  document.getElementById('licenseInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') activateLicense();
+  });
+</script>
+
+</body>
+</html>

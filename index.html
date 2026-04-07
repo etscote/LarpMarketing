@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>larpify — Shopify Analytics, Anywhere</title>
+  <meta name="description" content="A pixel-perfect Shopify analytics dashboard on your phone. Customizable, convincing, always in your pocket.">
+  <meta name="theme-color" content="#0A0F0A">
+  <link rel="icon" type="image/png" href="/images/LarpifyLogo.png">
+  <link rel="stylesheet" href="./css/main.css">
+</head>
+<body>
+
+<!-- Ambient background -->
+<div class="ambient-bg">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" onclick="toggleMobileMenu()">
+    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+  </button>
+  <a href="#features">Features</a>
+  <a href="#how">How it works</a>
+  <a href="#pricing">Pricing</a>
+  <a href="/activate.html" class="btn btn-primary" style="margin-top:12px;">Dashboard</a>
+</div>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-inner">
+    <a class="logo" href="/">
+      <div class="logo-icon">
+        <img src="/images/LarpifyLogo.png">
+      </div>
+      <div class="logo-text">larpi<span>fy</span></div>
+    </a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="/activate.html" class="btn btn-primary" style="margin-left:8px;">Dashboard</a>
+    </div>
+    <button class="mobile-toggle" onclick="toggleMobileMenu()">
+      <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">
+    <span class="dot"></span> Shopify Analytics · Mobile PWA
+  </div>
+  <h1>Your store.<br><span class="gradient">Everywhere you go.</span></h1>
+  <p>A pixel-perfect Shopify analytics dashboard — fully customizable, installable on any phone, and always convincing.</p>
+  <div class="hero-actions">
+    <a href="#pricing" class="btn btn-primary">
+      Get Started
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+    <a href="#features" class="btn btn-ghost">See Features</a>
+  </div>
+</section>
+
+<!-- Phone mockup -->
+<div class="phone-section">
+  <div class="phone-wrap">
+    <img src="/images/Device.png" alt="larpify app" class="phone-img">
+  </div>
+</div>
+
+<!-- Features -->
+<section class="features" id="features">
+  <div class="section-label">Features</div>
+  <div class="section-title">Everything you need.<br>Nothing you don't.</div>
+  <div class="features-grid">
+
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      </div>
+      <h3>Real-looking Dashboard</h3>
+      <p>Pixel-perfect replica of the Shopify mobile app. Sales, orders, conversion rate — all displayed exactly as the real thing.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 22c1.1 0 2-.9 2-2H10a2 2 0 002 2zm6-6V11c0-3.07-1.64-5.64-4.5-6.32V4a1.5 1.5 0 00-3 0v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+      </div>
+      <h3>Push Notifications</h3>
+      <p>Fire realistic order notifications on demand. Set the product, buyer name, location, amount — and send as many as you want.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      </div>
+      <h3>Fully Customizable</h3>
+      <p>Change your store name, logo, avatar, sales figures, order counts, and visitor numbers instantly from the settings panel.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <h3>Live Analytics Charts</h3>
+      <p>Swipeable metric cards with four different charts — Total sales, Orders, Conversion rate, and Gross sales — each with unique shapes.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+      </div>
+      <h3>Install as PWA</h3>
+      <p>Add to your home screen on iPhone or Android. Looks and feels like a native app — no App Store needed.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <h3>Multiple Time Periods</h3>
+      <p>Switch between Last 12 hours, Today, Last 7 days, Last 30 days, and Last 90 days — just like the real Shopify app.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- How it works -->
+<section class="how-it-works" id="how">
+  <div style="text-align:center;">
+    <div class="section-label">How it works</div>
+    <div class="section-title">Up and running<br>in minutes.</div>
+  </div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h3>Choose a plan</h3>
+        <p>Pick the package that works for you — weekly, monthly, or lifetime access. Pay instantly with crypto.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h3>Receive your license key</h3>
+        <p>Get your key delivered instantly. Use it to activate the app directly in your browser — no downloads needed.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h3>Install to home screen</h3>
+        <p>Tap "Add to Home Screen" in Safari (iOS) or Chrome (Android). It installs like a native app in seconds.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <h3>Customize & impress</h3>
+        <p>Set your store name, tweak the numbers, fire push notifications. Your Shopify empire — exactly as you want it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section class="pricing" id="pricing">
+  <div class="section-label">Pricing</div>
+  <div class="section-title">Simple, honest pricing.</div>
+  <div class="pricing-grid">
+
+    <div class="pricing-card">
+      <div class="plan-name">Starter</div>
+      <div class="plan-price"><span>$</span>15</div>
+      <div class="plan-period">7 days access</div>
+      <ul class="plan-features">
+        <li><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Full dashboard access</li>
+        <li><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Push notifications</li>
+        <li><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> PWA install</li>
+        <li><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> 1 device</li>
+      </ul>
+      <button class="btn btn-ghost" onclick="openPayment('Starter', 15, '7 days')">Get Started</button>
+    </div>
+
+    <div class="pricing-card popular">
+      <div class="popular-tag">Most Popular</div>
+      <div class="plan-name">Pro</div>
+      <div class="plan-price"><span>$</span>40</div>
+      <div class="plan-period">1 month access</div>
+      <ul class="plan-features">
+        <li><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Full dashboard access</li>
+        <li><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Push notifications</li>
+        <li><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> PWA install</li>
+        <li><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> 2 devices</li>
+        <li><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Priority support</li>
+      </ul>
+      <button class="btn btn-primary" onclick="openPayment('Pro', 40, '1 month')">Get Started</button>
+    </div>
+
+    <div class="pricing-card">
+      <div class="plan-name">Lifetime</div>
+      <div class="plan-price"><span>$</span>120</div>
+      <div class="plan-period">One-time payment</div>
+      <ul class="plan-features">
+        <li><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Full dashboard access</li>
+        <li><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Push notifications</li>
+        <li><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> PWA install</li>
+        <li><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Unlimited devices</li>
+        <li><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> Priority support</li>
+        <li><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg> All future updates</li>
+      </ul>
+      <button class="btn btn-ghost" onclick="openPayment('Lifetime', 120, 'Lifetime')">Get Started</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- Disclaimer -->
+<div class="disclaimer">
+  <div class="disclaimer-box">
+    <p><strong>Entertainment purposes only.</strong> larpify is not affiliated with or endorsed by Shopify Inc. This app is a simulation for entertainment use only — no real store data is involved.</p>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-copy">&copy; 2026 larpify. All rights reserved.</div>
+    <div class="footer-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Payment Modal -->
+<div class="pay-overlay" id="payOverlay" onclick="closePayment(event)">
+  <div class="pay-modal" id="payModal">
+
+    <!-- Step 1: pick crypto -->
+    <div class="pay-step" id="payStep1">
+      <button class="pay-close" onclick="closePaymentModal()">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+      <div class="pay-plan-header">
+        <div>
+          <div class="pay-plan-name" id="ps1Name"></div>
+          <div class="pay-plan-period" id="ps1Period"></div>
+        </div>
+        <div class="pay-plan-price" id="ps1Price"></div>
+      </div>
+
+      <div class="pay-label">PAY WITH</div>
+      <div class="pay-crypto-grid" id="cryptoGrid">
+        <button class="crypto-btn" data-coin="sol" onclick="selectCrypto(this)">
+          <img src="https://assets.coingecko.com/coins/images/4128/small/solana.png" alt="SOL"> Solana
+        </button>
+        <button class="crypto-btn" data-coin="eth" onclick="selectCrypto(this)">
+          <img src="https://assets.coingecko.com/coins/images/279/small/ethereum.png" alt="ETH"> Ethereum
+        </button>
+        <button class="crypto-btn" data-coin="btc" onclick="selectCrypto(this)">
+          <img src="https://assets.coingecko.com/coins/images/1/small/bitcoin.png" alt="BTC"> Bitcoin
+        </button>
+        <button class="crypto-btn" data-coin="usdt" onclick="selectCrypto(this)">
+          <img src="https://assets.coingecko.com/coins/images/325/small/Tether.png" alt="USDT"> USDT (SOL)
+        </button>
+      </div>
+
+      <div class="pay-discount-row">
+        <input class="pay-discount-input" id="discountInput" type="text" placeholder="Discount code">
+        <button class="pay-discount-apply" onclick="applyDiscount()">Apply</button>
+      </div>
+
+      <button class="pay-select-btn" id="paySelectBtn" onclick="proceedToPayment()">Select a payment method</button>
+
+      <div class="pay-help">
+        Need help or want to pay with another method? Message
+        <a href="https://t.me/solarugss" target="_blank">@solarugss</a> on Telegram.
+      </div>
+    </div>
+
+    <!-- Step 2: QR / payment screen -->
+    <div class="pay-step" id="payStep2" style="display:none;">
+      <button class="pay-close" onclick="closePaymentModal()">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+      <div class="pay-order-id" id="payOrderId"></div>
+      <div class="pay-plan-header">
+        <div class="pay-plan-name" id="ps2Name"></div>
+        <div class="pay-plan-price" id="ps2Price"></div>
+      </div>
+      <div class="pay-status-badge"><span class="pay-status-dot"></span> WAITING FOR PAYMENT</div>
+
+      <div class="pay-send-label">SEND EXACTLY</div>
+      <div class="pay-amount" id="payAmount"></div>
+      <div class="pay-amount-sub">to the address below (round up if your wallet limits decimals)</div>
+
+      <div class="pay-qr-wrap" id="payQrWrap"></div>
+      <div class="pay-qr-tap">Scan QR or tap to open in wallet app</div>
+
+      <div class="pay-addr-box" id="payAddrBox" onclick="copyAddr()"></div>
+      <div class="pay-copied" id="payCopied">Copied!</div>
+
+      <button class="pay-back-btn" onclick="goBackStep1()">← Change payment method</button>
+    </div>
+
+    <!-- Step 3: Payment confirmed + key -->
+    <div class="pay-step" id="payStep3" style="display:none;">
+      <div class="pay-success-icon">
+        <svg width="36" height="36" fill="none" stroke="#95BF47" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+      </div>
+      <div class="pay-success-title">Payment Confirmed!</div>
+      <div class="pay-success-sub">Your license key — copy it before closing:</div>
+      <div class="pay-key-box" id="payKeyDisplay" onclick="copyKey()"></div>
+      <div class="pay-copied" id="payCopiedKey">Copied!</div>
+      <a href="/activate.html" class="pay-select-btn" style="display:block;text-align:center;text-decoration:none;margin-top:16px;">
+        Activate Now →
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+  function toggleMobileMenu() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+  document.getElementById('mobileMenu').querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => document.getElementById('mobileMenu').classList.remove('open'));
+  });
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const href = a.getAttribute('href');
+      if (href.length > 1 && document.querySelector(href)) {
+        e.preventDefault();
+        document.querySelector(href).scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // ── Supabase ──
+  const { createClient } = supabase;
+  const db = createClient(
+    'https://cbqrhwgzzkoqgicxvvdr.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNicXJod2d6emtvcWdpY3h2dmRyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNjUyNTksImV4cCI6MjA5MDY0MTI1OX0.wX7Lm5Jdv6lytTM1Ig8RGDsag58CccXKw9pkwIDJdgo'
+  );
+
+  // ── Payment ──
+  const WALLETS = {
+    sol:  'A8HSniSFHofGiQUQwcmgRsaCJq6NM9B2zj4XM4pysYRY',
+    btc:  'bc1phz2kpd7lr289ue09v6ps3nnd9v2cw6z7qynhqskssl2x5j27y4kqzxs8xa',
+    eth:  '0xE8aFc31256D7EF78eBae7273d9fACCb4A2c86AEb',
+    usdt: 'A8HSniSFHofGiQUQwcmgRsaCJq6NM9B2zj4XM4pysYRY',
+  };
+
+  let _plan = {}, _coin = null, _prices = null, _pollInterval = null, _currentOrderId = null;
+
+  function openPayment(name, price, period) {
+    _plan = { name, price, period };
+    _coin = null;
+    _currentOrderId = null;
+    stopPolling();
+    document.getElementById('ps1Name').textContent = name;
+    document.getElementById('ps1Period').textContent = period + ' access';
+    document.getElementById('ps1Price').textContent = '$' + price;
+    document.getElementById('discountInput').value = '';
+    document.querySelectorAll('.crypto-btn').forEach(b => b.classList.remove('selected'));
+    document.getElementById('payStep1').style.display = '';
+    document.getElementById('payStep2').style.display = 'none';
+    document.getElementById('payStep3').style.display = 'none';
+    document.getElementById('payOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    fetchPrices();
+  }
+
+  function closePaymentModal() {
+    stopPolling();
+    document.getElementById('payOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function closePayment(e) {
+    if (e.target === document.getElementById('payOverlay')) closePaymentModal();
+  }
+
+  function selectCrypto(btn) {
+    document.querySelectorAll('.crypto-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    _coin = btn.dataset.coin;
+  }
+
+  function applyDiscount() {
+    const val = document.getElementById('discountInput').value.trim();
+    if (!val) return;
+    document.getElementById('discountInput').style.borderColor = '#e53e3e';
+    setTimeout(() => document.getElementById('discountInput').style.borderColor = '', 1200);
+  }
+
+  async function fetchPrices() {
+    try {
+      const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=solana,bitcoin,ethereum&vs_currencies=usd');
+      const d = await r.json();
+      _prices = { sol: d.solana.usd, btc: d.bitcoin.usd, eth: d.ethereum.usd, usdt: 1 };
+    } catch (_) { _prices = null; }
+  }
+
+  async function proceedToPayment() {
+    if (!_coin) {
+      document.getElementById('cryptoGrid').style.animation = 'shake .35s';
+      setTimeout(() => document.getElementById('cryptoGrid').style.animation = '', 400);
+      return;
+    }
+
+    // BTC and ETH have no automated webhook — route to Telegram for manual confirmation
+    if (_coin === 'btc' || _coin === 'eth') {
+      const ticker = _coin === 'btc' ? 'BTC' : 'ETH';
+      const addr = WALLETS[_coin];
+      window.open(
+        `https://t.me/solarugss?text=${encodeURIComponent(`Hi, I want to pay for the ${_plan.name} plan ($${_plan.price}) with ${ticker}.`)}`,
+        '_blank'
+      );
+      closePaymentModal();
+      return;
+    }
+    if (!_prices) await fetchPrices();
+    if (!_prices) { alert('Could not fetch live prices. Try again.'); return; }
+
+    const usd = _plan.price;
+    const rate = _prices[_coin];
+    const dust = (Math.floor(Math.random() * 9) + 1) * (_coin === 'btc' ? 0.000001 : _coin === 'eth' ? 0.00001 : 0.00001);
+    const cryptoAmt = ((usd / rate) + dust).toFixed(_coin === 'btc' ? 8 : _coin === 'eth' ? 6 : 8);
+    const ticker = { sol: 'SOL', btc: 'BTC', eth: 'ETH', usdt: 'USDT' }[_coin];
+    const addr = WALLETS[_coin];
+    const orderId = 'ORD-' + [...crypto.getRandomValues(new Uint8Array(16))].map(b => b.toString(16).padStart(2,'0')).join('').toUpperCase();
+
+    // Save order to Supabase
+    const { error } = await db.from('orders').insert({
+      order_id: orderId,
+      plan: _plan.name,
+      amount_usd: usd,
+      amount_crypto: parseFloat(cryptoAmt),
+      coin: _coin,
+      status: 'pending'
+    });
+    if (error) { console.error('Supabase error:', JSON.stringify(error)); alert('Error: ' + error.message); return; }
+
+    _currentOrderId = orderId;
+
+    const qrUri = buildQrUri(_coin, addr, cryptoAmt, _plan.name);
+
+    document.getElementById('payOrderId').textContent = orderId;
+    document.getElementById('ps2Name').textContent = _plan.name;
+    document.getElementById('ps2Price').textContent = '$' + usd;
+    document.getElementById('payAmount').textContent = cryptoAmt + ' ' + ticker;
+    document.getElementById('payAddrBox').textContent = addr;
+    document.getElementById('payCopied').style.opacity = '0';
+
+    const qrWrap = document.getElementById('payQrWrap');
+    qrWrap.innerHTML = '';
+    new QRCode(qrWrap, { text: qrUri, width: 200, height: 200, colorDark: '#000', colorLight: '#fff', correctLevel: QRCode.CorrectLevel.M });
+    qrWrap.onclick = () => window.open(qrUri, '_blank');
+
+    document.getElementById('payStep1').style.display = 'none';
+    document.getElementById('payStep2').style.display = '';
+
+    startPolling(orderId);
+  }
+
+  function startPolling(orderId) {
+    _pollInterval = setInterval(async () => {
+      const { data } = await db.from('orders').select('status, license_key').eq('order_id', orderId).single();
+      if (data?.status === 'paid' && data?.license_key) {
+        stopPolling();
+        showKeyScreen(data.license_key);
+      }
+    }, 5000);
+  }
+
+  function stopPolling() {
+    if (_pollInterval) { clearInterval(_pollInterval); _pollInterval = null; }
+  }
+
+  function showKeyScreen(key) {
+    document.getElementById('payStep2').style.display = 'none';
+    document.getElementById('payStep3').style.display = '';
+    document.getElementById('payKeyDisplay').textContent = key;
+    document.getElementById('payCopiedKey').style.opacity = '0';
+  }
+
+  function buildQrUri(coin, addr, amount, label) {
+    const enc = encodeURIComponent;
+    if (coin === 'sol') return `solana:${addr}?amount=${amount}&label=${enc('larpify ' + label)}&message=${enc('larpify Purchase')}`;
+    if (coin === 'btc') return `bitcoin:${addr}?amount=${amount}&label=${enc('larpify ' + label)}`;
+    if (coin === 'eth') return `ethereum:${addr}?value=${amount}&label=${enc('larpify ' + label)}`;
+    if (coin === 'usdt') return `solana:${addr}?amount=${amount}&label=${enc('larpify ' + label + ' USDT')}`;
+    return addr;
+  }
+
+  function goBackStep1() {
+    stopPolling();
+    document.getElementById('payStep1').style.display = '';
+    document.getElementById('payStep2').style.display = 'none';
+  }
+
+  function copyAddr() {
+    navigator.clipboard.writeText(document.getElementById('payAddrBox').textContent).then(() => {
+      const el = document.getElementById('payCopied');
+      el.style.opacity = '1';
+      setTimeout(() => el.style.opacity = '0', 1800);
+    });
+  }
+
+  function copyKey() {
+    navigator.clipboard.writeText(document.getElementById('payKeyDisplay').textContent).then(() => {
+      const el = document.getElementById('payCopiedKey');
+      el.style.opacity = '1';
+      setTimeout(() => el.style.opacity = '0', 1800);
+    });
+  }
+</script>
+
+</body>
+</html>
