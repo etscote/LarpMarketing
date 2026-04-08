@@ -14,6 +14,15 @@ const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 const SOL_WALLET = 'A8HSniSFHofGiQUQwcmgRsaCJq6NM9B2zj4XM4pysYRY';
 const USDT_MINT  = 'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB'; // USDT on Solana
 
+app.use((req, res, next) => {
+  const allowed = ['https://www.getlarpify.com', 'https://app.getlarpify.com'];
+  const origin = req.headers.origin;
+  if (allowed.includes(origin)) res.setHeader('Access-Control-Allow-Origin', origin);
+  res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  if (req.method === 'OPTIONS') return res.sendStatus(204);
+  next();
+});
 app.use(express.json());
 app.use(express.static(__dirname));
 
