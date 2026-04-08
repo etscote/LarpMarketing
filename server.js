@@ -43,11 +43,12 @@ async function confirmOrder(coin, amountReceived) {
   const key = generateKey();
   console.log(`Match found: ${matched.order_id} → key: ${key}`);
 
-  await db.from('orders').update({
+  const { error: updateError } = await db.from('orders').update({
     status: 'paid',
     license_key: key,
     paid_at: new Date().toISOString()
   }).eq('id', matched.id);
+  if (updateError) console.error('Update error:', JSON.stringify(updateError));
 }
 
 // Helius webhook — called when a transaction hits your SOL wallet
