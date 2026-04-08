@@ -98,6 +98,7 @@ app.post('/check-license', async (req, res) => {
   if (!key) return res.json({ valid: false, reason: 'No key provided' });
 
   const ip = (req.headers['x-forwarded-for'] || req.ip || '').split(',')[0].trim();
+  console.log(`check-license key=${key} ip=${ip}`);
 
   const { data: order, error } = await db
     .from('orders')
@@ -106,6 +107,7 @@ app.post('/check-license', async (req, res) => {
     .eq('status', 'paid')
     .single();
 
+  console.log(`order found: ${JSON.stringify(order)} error: ${JSON.stringify(error)}`);
   if (error || !order) return res.json({ valid: false, reason: 'Invalid license key.' });
 
   const maxIps = PLAN_LIMITS[order.plan] || 1;
