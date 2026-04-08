@@ -163,9 +163,7 @@
       }
 
       errEl.style.display = 'none';
-      localStorage.setItem('larpify_key', key);
-      localStorage.setItem('larpify_plan', data.plan);
-      window.location.href = PWA_URL;
+      window.location.href = `${PWA_URL}?key=${encodeURIComponent(key)}&plan=${encodeURIComponent(data.plan)}`;
     } catch (e) {
       errEl.textContent = 'Connection error. Try again.';
       errEl.style.display = 'block';
