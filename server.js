@@ -64,7 +64,7 @@ async function confirmOrder(coin, amountReceived) {
 app.post('/webhook/helius', async (req, res) => {
   // Verify webhook secret so nobody can fake a payment
   const secret = process.env.HELIUS_WEBHOOK_SECRET;
-  if (secret && req.headers['authorization'] !== secret) {
+  if (!secret || req.headers['authorization'] !== secret) {
     console.warn('Helius webhook: unauthorized request rejected');
     return res.sendStatus(401);
   }
@@ -99,8 +99,23 @@ app.post('/webhook/helius', async (req, res) => {
 
 const PLAN_LIMITS = { Starter: 1, Pro: 2, Lifetime: 5 };
 
+// Simple rate limiter — max 10 requests per IP per minute on sensitive endpoints
+const rateLimitMap = new Map();
+function rateLimit(req, res, next) {
+  const ip = (req.headers['x-forwarded-for'] || req.ip || '').split(',')[0].trim();
+  const now = Date.now();
+  const windowMs = 60_000;
+  const max = 10;
+  const entry = rateLimitMap.get(ip) || { count: 0, start: now };
+  if (now - entry.start > windowMs) { entry.count = 0; entry.start = now; }
+  entry.count++;
+  rateLimitMap.set(ip, entry);
+  if (entry.count > max) return res.status(429).json({ valid: false, reason: 'Too many requests. Try again later.' });
+  next();
+}
+
 // License key validation + IP registration
-app.post('/check-license', async (req, res) => {
+app.post('/check-license', rateLimit, async (req, res) => {
   const { key } = req.body;
   if (!key) return res.json({ valid: false, reason: 'No key provided' });
 
