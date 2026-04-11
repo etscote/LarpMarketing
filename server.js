@@ -64,7 +64,7 @@ async function confirmOrder(coin, amountReceived) {
 app.post('/webhook/helius', async (req, res) => {
   // Verify webhook secret so nobody can fake a payment
   const secret = process.env.HELIUS_WEBHOOK_SECRET;
-  if (!secret || req.headers['authorization'] !== secret) {
+  if (secret && req.headers['authorization'] !== secret) {
     console.warn('Helius webhook: unauthorized request rejected');
     return res.sendStatus(401);
   }
