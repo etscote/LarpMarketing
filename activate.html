@@ -176,6 +176,13 @@
   document.getElementById('licenseInput').addEventListener('keydown', e => {
     if (e.key === 'Enter') activateLicense();
   });
+
+  // Auto-fill key from URL param (e.g. when scanned from QR code)
+  const urlKey = new URLSearchParams(window.location.search).get('key');
+  if (urlKey) {
+    document.getElementById('licenseInput').value = urlKey.toUpperCase();
+    activateLicense();
+  }
 </script>
 
 </body>

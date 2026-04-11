@@ -319,10 +319,12 @@
         <svg width="36" height="36" fill="none" stroke="#95BF47" stroke-width="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
       </div>
       <div class="pay-success-title">Payment Confirmed!</div>
-      <div class="pay-success-sub">Your license key — copy it before closing:</div>
+      <div class="pay-success-sub">Your license key — copy it or scan the QR on your phone:</div>
       <div class="pay-key-box" id="payKeyDisplay" onclick="copyKey()"></div>
       <div class="pay-copied" id="payCopiedKey">Copied!</div>
-      <a href="/activate.html" class="pay-select-btn" style="display:block;text-align:center;text-decoration:none;margin-top:16px;">
+      <div id="activateQr" style="margin:16px auto 4px;width:160px;height:160px;"></div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.4);text-align:center;margin-bottom:12px;">Scan to activate on your phone</div>
+      <a id="activateLink" href="/activate.html" class="pay-select-btn" style="display:block;text-align:center;text-decoration:none;margin-top:4px;">
         Activate Now →
       </a>
     </div>
@@ -496,6 +498,13 @@
     document.getElementById('payStep3').style.display = '';
     document.getElementById('payKeyDisplay').textContent = key;
     document.getElementById('payCopiedKey').style.opacity = '0';
+
+    const activateUrl = `https://www.getlarpify.com/activate.html?key=${encodeURIComponent(key)}`;
+    document.getElementById('activateLink').href = activateUrl;
+
+    const qrWrap = document.getElementById('activateQr');
+    qrWrap.innerHTML = '';
+    new QRCode(qrWrap, { text: activateUrl, width: 160, height: 160, colorDark: '#000', colorLight: '#fff', correctLevel: QRCode.CorrectLevel.M });
   }
 
   function buildQrUri(coin, addr, amount, label) {
