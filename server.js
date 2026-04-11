@@ -40,8 +40,8 @@ async function confirmOrder(coin, amountReceived) {
   if (error || !orders?.length) return;
 
   const matched = orders.find(o => {
-    const diff = Math.abs(parseFloat(o.amount_crypto) - amountReceived) / parseFloat(o.amount_crypto);
-    return diff < 0.0005; // 0.05% — tight enough to uniquely match dust-offset orders
+    const diff = Math.abs(parseFloat(o.amount_crypto) - amountReceived);
+    return diff < 0.001; // within 0.001 of the expected amount — covers dust offset
   });
 
   if (!matched) {
