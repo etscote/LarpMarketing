@@ -44,10 +44,13 @@ async function confirmOrder(coin, amountReceived) {
 
   if (error || !orders?.length) return;
 
-  const matched = orders.find(o => {
+  // Pick the closest matching order (not just first within tolerance)
+  let matched = null, bestDiff = Infinity;
+  for (const o of orders) {
     const diff = Math.abs(parseFloat(o.amount_crypto) - amountReceived);
-    return diff < 0.001; // within 0.001 of the expected amount — covers dust offset
-  });
+    if (diff < 0.001 && diff < bestDiff) { matched = o; bestDiff = diff; }
+  }
+  console.log(matched ? `Best match: ${matched.order_id} (diff: ${bestDiff})` : 'No match found');
 
   if (!matched) {
     console.log(`No matching ${coin} order for ${amountReceived}`);

@@ -440,7 +440,7 @@
 
     const usd = _plan.price;
     const rate = _prices[_coin];
-    const dust = (Math.floor(Math.random() * 9) + 1) * (_coin === 'btc' ? 0.000001 : _coin === 'eth' ? 0.00001 : 0.00001);
+    const dust = (Math.floor(Math.random() * 900) + 100) * (_coin === 'btc' ? 0.000001 : _coin === 'eth' ? 0.00001 : 0.000001);
     const cryptoAmt = ((usd / rate) + dust).toFixed(_coin === 'btc' ? 8 : _coin === 'eth' ? 6 : 8);
     const ticker = { sol: 'SOL', btc: 'BTC', eth: 'ETH', usdt: 'USDT' }[_coin];
     const addr = WALLETS[_coin];
