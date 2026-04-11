@@ -30,6 +30,11 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+app.get('/webhook/test', (req, res) => {
+  console.log('Webhook test endpoint hit');
+  res.json({ ok: true, time: new Date().toISOString() });
+});
+
 async function confirmOrder(coin, amountReceived) {
   const { data: orders, error } = await db
     .from('orders')
