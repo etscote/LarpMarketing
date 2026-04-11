@@ -62,6 +62,13 @@ async function confirmOrder(coin, amountReceived) {
 
 // Helius webhook — called when a transaction hits your SOL wallet
 app.post('/webhook/helius', async (req, res) => {
+  // Verify webhook secret so nobody can fake a payment
+  const secret = process.env.HELIUS_WEBHOOK_SECRET;
+  if (secret && req.headers['authorization'] !== secret) {
+    console.warn('Helius webhook: unauthorized request rejected');
+    return res.sendStatus(401);
+  }
+
   res.sendStatus(200); // always respond fast to Helius
 
   try {
