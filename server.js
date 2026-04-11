@@ -74,10 +74,18 @@ app.post('/webhook/helius', async (req, res) => {
   try {
     const events = Array.isArray(req.body) ? req.body : [req.body];
 
+    console.log(`Helius: received ${events.length} event(s)`);
+
     for (const event of events) {
+      console.log(`Event type: ${event.type}, nativeTransfers: ${(event.nativeTransfers||[]).length}, tokenTransfers: ${(event.tokenTransfers||[]).length}`);
+
       // Native SOL transfers
       for (const transfer of (event.nativeTransfers || [])) {
-        if (transfer.toUserAccount !== SOL_WALLET) continue;
+        console.log(`SOL transfer → toUserAccount: ${transfer.toUserAccount}, amount: ${transfer.amount}`);
+        if (transfer.toUserAccount !== SOL_WALLET) {
+          console.log(`Skipping — not our wallet (expected ${SOL_WALLET})`);
+          continue;
+        }
         const amountSOL = transfer.amount / 1e9;
         console.log(`Incoming SOL: ${amountSOL}`);
         await confirmOrder('sol', amountSOL);
@@ -85,9 +93,16 @@ app.post('/webhook/helius', async (req, res) => {
 
       // USDT (SPL token) transfers
       for (const transfer of (event.tokenTransfers || [])) {
-        if (transfer.toUserAccount !== SOL_WALLET) continue;
-        if (transfer.mint !== USDT_MINT) continue;
-        const amountUSDT = transfer.tokenAmount; // already human-readable
+        console.log(`Token transfer → toUserAccount: ${transfer.toUserAccount}, mint: ${transfer.mint}, amount: ${transfer.tokenAmount}`);
+        if (transfer.toUserAccount !== SOL_WALLET) {
+          console.log(`Skipping — not our wallet`);
+          continue;
+        }
+        if (transfer.mint !== USDT_MINT) {
+          console.log(`Skipping — wrong mint (expected ${USDT_MINT})`);
+          continue;
+        }
+        const amountUSDT = transfer.tokenAmount;
         console.log(`Incoming USDT: ${amountUSDT}`);
         await confirmOrder('usdt', amountUSDT);
       }
