@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
+const crypto = require('crypto');
 const { createClient } = require('@supabase/supabase-js');
 
 const app = express();
@@ -13,6 +14,13 @@ const db = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const SOL_WALLET = 'A8HSniSFHofGiQUQwcmgRsaCJq6NM9B2zj4XM4pysYRY';
 const USDT_MINT  = 'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB'; // USDT on Solana
+
+// Promo codes — add or remove codes here, discount is a percentage
+const PROMO_CODES = {
+  'VICTKRR': { discount: 20 }
+};
+
+const PLAN_PRICES = { Starter: 15, Pro: 40, Lifetime: 120 };
 
 app.use((req, res, next) => {
   const allowed = ['https://www.getlarpify.com', 'https://app.getlarpify.com'];
@@ -172,6 +180,83 @@ app.post('/check-license', rateLimit, async (req, res) => {
   if (updateError) return res.json({ valid: false, reason: 'Server error. Try again.' });
 
   return res.json({ valid: true, plan: order.plan });
+});
+
+// Validate a promo code
+app.post('/validate-promo', rateLimit, (req, res) => {
+  const { code } = req.body || {};
+  if (!code || typeof code !== 'string') return res.json({ valid: false });
+  const promo = PROMO_CODES[code.trim().toUpperCase()];
+  if (!promo) return res.json({ valid: false });
+  return res.json({ valid: true, discount: promo.discount });
+});
+
+// Create order server-side so the discount can't be faked on the client
+app.post('/create-order', rateLimit, async (req, res) => {
+  const { plan, coin, promo_code } = req.body || {};
+
+  if (!PLAN_PRICES[plan]) return res.status(400).json({ error: 'Invalid plan' });
+  if (!['sol', 'usdt'].includes(coin)) return res.status(400).json({ error: 'Invalid coin for automated payment' });
+
+  let usd = PLAN_PRICES[plan];
+  let appliedPromo = null;
+
+  if (promo_code) {
+    const promo = PROMO_CODES[promo_code.trim().toUpperCase()];
+    if (promo) {
+      usd = parseFloat((usd * (1 - promo.discount / 100)).toFixed(2));
+      appliedPromo = promo_code.trim().toUpperCase();
+    }
+  }
+
+  let solPrice;
+  try {
+    const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd');
+    const d = await r.json();
+    solPrice = d.solana.usd;
+  } catch {
+    return res.status(503).json({ error: 'Could not fetch live prices. Try again.' });
+  }
+
+  const rate = coin === 'usdt' ? 1 : solPrice;
+  const dust = (Math.floor(Math.random() * 900) + 100) * 0.000001;
+  const cryptoAmt = parseFloat(((usd / rate) + dust).toFixed(8));
+  const orderId = 'ORD-' + crypto.randomBytes(16).toString('hex').toUpperCase();
+
+  const orderRow = { order_id: orderId, plan, amount_usd: usd, amount_crypto: cryptoAmt, coin, status: 'pending' };
+  if (appliedPromo) orderRow.promo_code = appliedPromo;
+
+  const { error } = await db.from('orders').insert(orderRow);
+  if (error) return res.status(500).json({ error: error.message });
+
+  return res.json({ order_id: orderId, amount_usd: usd, amount_crypto: cryptoAmt });
+});
+
+// Promo code usage stats — protect with ADMIN_SECRET env var
+app.get('/promo-stats', async (req, res) => {
+  const secret = process.env.ADMIN_SECRET;
+  if (secret && req.query.secret !== secret) return res.status(403).json({ error: 'Forbidden' });
+
+  const { data, error } = await db
+    .from('orders')
+    .select('promo_code, plan, amount_usd, status')
+    .not('promo_code', 'is', null);
+
+  if (error) return res.status(500).json({ error: error.message });
+
+  const stats = {};
+  for (const order of data || []) {
+    const code = order.promo_code;
+    if (!stats[code]) stats[code] = { uses: 0, paid: 0, revenue: 0, plans: {} };
+    stats[code].uses++;
+    if (order.status === 'paid') {
+      stats[code].paid++;
+      stats[code].revenue = parseFloat((stats[code].revenue + order.amount_usd).toFixed(2));
+    }
+    stats[code].plans[order.plan] = (stats[code].plans[order.plan] || 0) + 1;
+  }
+
+  return res.json(stats);
 });
 
 function generateKey() {

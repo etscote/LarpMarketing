@@ -276,8 +276,8 @@
       </div>
 
       <div class="pay-discount-row">
-        <input class="pay-discount-input" id="discountInput" type="text" placeholder="Discount code">
-        <button class="pay-discount-apply" onclick="applyDiscount()">Apply</button>
+        <input class="pay-discount-input" id="discountInput" type="text" placeholder="Discount code" onkeydown="if(event.key==='Enter')applyDiscount()">
+        <button class="pay-discount-apply" id="discountApplyBtn" onclick="applyDiscount()">Apply</button>
       </div>
 
       <button class="pay-select-btn" id="paySelectBtn" onclick="proceedToPayment()">Select a payment method</button>
@@ -366,24 +366,29 @@
     usdt: 'A8HSniSFHofGiQUQwcmgRsaCJq6NM9B2zj4XM4pysYRY',
   };
 
-  let _plan = {}, _coin = null, _prices = null, _pollInterval = null, _currentOrderId = null;
+  let _plan = {}, _coin = null, _discount = null, _pollInterval = null, _currentOrderId = null;
 
   function openPayment(name, price, period) {
     _plan = { name, price, period };
     _coin = null;
+    _discount = null;
     _currentOrderId = null;
     stopPolling();
     document.getElementById('ps1Name').textContent = name;
     document.getElementById('ps1Period').textContent = period + ' access';
     document.getElementById('ps1Price').textContent = '$' + price;
     document.getElementById('discountInput').value = '';
+    document.getElementById('discountInput').style.borderColor = '';
+    document.getElementById('discountApplyBtn').textContent = 'Apply';
+    document.getElementById('discountApplyBtn').disabled = false;
+    const badge = document.getElementById('discountBadge');
+    if (badge) badge.remove();
     document.querySelectorAll('.crypto-btn').forEach(b => b.classList.remove('selected'));
     document.getElementById('payStep1').style.display = '';
     document.getElementById('payStep2').style.display = 'none';
     document.getElementById('payStep3').style.display = 'none';
     document.getElementById('payOverlay').classList.add('open');
     document.body.style.overflow = 'hidden';
-    fetchPrices();
   }
 
   function closePaymentModal() {
@@ -402,19 +407,58 @@
     _coin = btn.dataset.coin;
   }
 
-  function applyDiscount() {
-    const val = document.getElementById('discountInput').value.trim();
-    if (!val) return;
-    document.getElementById('discountInput').style.borderColor = '#e53e3e';
-    setTimeout(() => document.getElementById('discountInput').style.borderColor = '', 1200);
-  }
+  async function applyDiscount() {
+    const val = document.getElementById('discountInput').value.trim().toUpperCase();
+    const input = document.getElementById('discountInput');
+    const btn = document.getElementById('discountApplyBtn');
+    const existingBadge = document.getElementById('discountBadge');
+    if (existingBadge) existingBadge.remove();
 
-  async function fetchPrices() {
+    if (!val) {
+      _discount = null;
+      document.getElementById('ps1Price').textContent = '$' + _plan.price;
+      input.style.borderColor = '';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = '...';
+
     try {
-      const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=solana,bitcoin,ethereum&vs_currencies=usd');
-      const d = await r.json();
-      _prices = { sol: d.solana.usd, btc: d.bitcoin.usd, eth: d.ethereum.usd, usdt: 1 };
-    } catch (_) { _prices = null; }
+      const r = await fetch('/validate-promo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: val })
+      });
+      const data = await r.json();
+
+      if (data.valid) {
+        _discount = { code: val, pct: data.discount };
+        const discounted = (_plan.price * (1 - data.discount / 100)).toFixed(2);
+        document.getElementById('ps1Price').innerHTML =
+          `<span style="text-decoration:line-through;opacity:0.45;font-size:0.85em;margin-right:4px;">$${_plan.price}</span>$${discounted}`;
+        input.style.borderColor = '#68d391';
+        btn.textContent = '✓';
+
+        const badge = document.createElement('div');
+        badge.id = 'discountBadge';
+        badge.style.cssText = 'color:#68d391;font-size:12px;margin-top:-6px;margin-bottom:8px;';
+        badge.textContent = `${val} — ${data.discount}% off applied`;
+        document.querySelector('.pay-discount-row').insertAdjacentElement('afterend', badge);
+      } else {
+        _discount = null;
+        document.getElementById('ps1Price').textContent = '$' + _plan.price;
+        input.style.borderColor = '#e53e3e';
+        btn.textContent = 'Apply';
+        btn.disabled = false;
+        setTimeout(() => { input.style.borderColor = ''; }, 1400);
+      }
+    } catch (_e) {
+      input.style.borderColor = '#e53e3e';
+      btn.textContent = 'Apply';
+      btn.disabled = false;
+      setTimeout(() => { input.style.borderColor = ''; }, 1400);
+    }
   }
 
   async function proceedToPayment() {
@@ -424,42 +468,41 @@
       return;
     }
 
-    // BTC and ETH have no automated webhook — route to Telegram for manual confirmation
+    // BTC and ETH — manual confirmation via Telegram
     if (_coin === 'btc' || _coin === 'eth') {
       const ticker = _coin === 'btc' ? 'BTC' : 'ETH';
-      const addr = WALLETS[_coin];
+      const effectivePrice = _discount
+        ? parseFloat((_plan.price * (1 - _discount.pct / 100)).toFixed(2))
+        : _plan.price;
+      const promoNote = _discount ? ` (promo: ${_discount.code}, ${_discount.pct}% off)` : '';
       window.open(
-        `https://t.me/solarugss?text=${encodeURIComponent(`Hi, I want to pay for the ${_plan.name} plan ($${_plan.price}) with ${ticker}.`)}`,
+        `https://t.me/solarugss?text=${encodeURIComponent(`Hi, I want to pay for the ${_plan.name} plan ($${effectivePrice}) with ${ticker}.${promoNote}`)}`,
         '_blank'
       );
       closePaymentModal();
       return;
     }
-    if (!_prices) await fetchPrices();
-    if (!_prices) { alert('Could not fetch live prices. Try again.'); return; }
 
-    const usd = _plan.price;
-    const rate = _prices[_coin];
-    const dust = (Math.floor(Math.random() * 900) + 100) * (_coin === 'btc' ? 0.000001 : _coin === 'eth' ? 0.00001 : 0.000001);
-    const cryptoAmt = ((usd / rate) + dust).toFixed(_coin === 'btc' ? 8 : _coin === 'eth' ? 6 : 8);
-    const ticker = { sol: 'SOL', btc: 'BTC', eth: 'ETH', usdt: 'USDT' }[_coin];
+    // SOL / USDT — server creates order and applies discount securely
+    let orderData;
+    try {
+      const r = await fetch('/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ plan: _plan.name, coin: _coin, promo_code: _discount ? _discount.code : null })
+      });
+      orderData = await r.json();
+    } catch (_e) {
+      alert('Network error. Please try again.'); return;
+    }
+    if (orderData.error) { alert('Error: ' + orderData.error); return; }
+
+    const { order_id: orderId, amount_usd: usd, amount_crypto: cryptoAmt } = orderData;
+    const ticker = { sol: 'SOL', usdt: 'USDT' }[_coin];
     const addr = WALLETS[_coin];
-    const orderId = 'ORD-' + [...crypto.getRandomValues(new Uint8Array(16))].map(b => b.toString(16).padStart(2,'0')).join('').toUpperCase();
-
-    // Save order to Supabase
-    const { error } = await db.from('orders').insert({
-      order_id: orderId,
-      plan: _plan.name,
-      amount_usd: usd,
-      amount_crypto: parseFloat(cryptoAmt),
-      coin: _coin,
-      status: 'pending'
-    });
-    if (error) { console.error('Supabase error:', JSON.stringify(error)); alert('Error: ' + error.message); return; }
+    const qrUri = buildQrUri(_coin, addr, String(cryptoAmt), _plan.name);
 
     _currentOrderId = orderId;
-
-    const qrUri = buildQrUri(_coin, addr, cryptoAmt, _plan.name);
 
     document.getElementById('payOrderId').textContent = orderId;
     document.getElementById('ps2Name').textContent = _plan.name;
